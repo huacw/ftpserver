@@ -125,10 +125,10 @@ public class User {
 	 * @return 用户工作目录
 	 */
 	public String getWorkDirectroy(String name) {
-		if (workDirectroies.containsKey(name)) {
+		if (!workDirectroies.containsKey(name)) {
 			throw new NotFoundException("notfound.userdir", null, name, userName);
 		}
-		// 如果路径名称为空或者不是已'/'开始，抛出异常
+		// 如果路径名称为空或者不是以'/'开始，抛出异常
 		if (StringUtils.isBlank(name) || (!name.startsWith("/"))) {
 			throw new IllegalArgumentException("illegal.user.pathname", null, name, userName);
 		}
