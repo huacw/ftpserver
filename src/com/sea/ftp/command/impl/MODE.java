@@ -16,7 +16,7 @@ import com.sea.ftp.exception.io.FTPIOException;
 public class MODE extends AbstractCommand {
 
 	@Override
-	public void execute(CommandContext context) throws FTPIOException {
+	public void done(CommandContext context) throws FTPIOException {
 		// TODO Auto-generated method stub
 
 	}

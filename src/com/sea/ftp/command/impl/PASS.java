@@ -20,7 +20,7 @@ import com.sea.ftp.util.CiphertextUtils;
 public class PASS extends AbstractCommand {
 
 	@Override
-	public void execute(CommandContext context) throws FTPIOException {
+	public void done(CommandContext context) throws FTPIOException {
 		User user = getLoginUser(context);
 		if (user == null) {
 			write(context, FtpReply.REPLY_332_NEED_ACCOUNT_FOR_LOGIN);

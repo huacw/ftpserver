@@ -20,7 +20,7 @@ import com.sea.ftp.util.StringUtils;
 public class USER extends AbstractCommand {
 
 	@Override
-	public void execute(CommandContext context) throws FTPIOException {
+	public void done(CommandContext context) throws FTPIOException {
 		UserManager userManager = context.getServerContext().getUserManager();
 		String[] args = getCmdArgs(context);
 		if (args == null || args.length == 0) {

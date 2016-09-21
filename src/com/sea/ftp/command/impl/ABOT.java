@@ -10,14 +10,15 @@ import com.sea.ftp.exception.io.FTPIOException;
  * 
  * 
  *
- * @author sea 
+ * @author sea
  */
 public class ABOT extends AbstractCommand {
 
-	@Override
-	public void execute(CommandContext context) throws FTPIOException {
-		// TODO Auto-generated method stub
+    @Override
+    protected void done(CommandContext context) throws FTPIOException {
+        // TODO Auto-generated method stub
 
-	}
+    }
+
 
 }
