@@ -6,6 +6,7 @@ import com.sea.ftp.command.code.FtpReply;
 import com.sea.ftp.command.impl.LocalizedFTPReply;
 import com.sea.ftp.constants.Constants;
 import com.sea.ftp.exception.FTPServerRuntimeException;
+import com.sea.ftp.exception.illegal.IllegalAuthorityException;
 import com.sea.ftp.exception.io.FTPIOException;
 import com.sea.ftp.server.context.request.DefaultFTPServerRequest;
 import com.sea.ftp.user.User;
@@ -55,7 +56,6 @@ public abstract class AbstractCommand implements Command {
             done(context);
         } catch (Exception e) {
             logger.error(e);
-
         } finally {
             after(context);
         }
@@ -85,10 +85,23 @@ public abstract class AbstractCommand implements Command {
             write(context, FtpReply.REPLY_332_NEED_ACCOUNT_FOR_LOGIN);
             throw new FTPServerRuntimeException(reply.getMessage(FtpReply.REPLY_332_NEED_ACCOUNT_FOR_LOGIN));
         }
+        if (!hasAuth(context)) {
+            throw new IllegalAuthorityException();
+        }
     }
 
     /**
-     * 具体的命令事项
+     * 用户是否拥有权限(子类根据需要重写)
+     * 
+     * @param context
+     * @return
+     */
+    protected boolean hasAuth(CommandContext context) {
+        return true;
+    }
+
+    /**
+     * 具体的命令执行
      * 
      * @param context
      */
