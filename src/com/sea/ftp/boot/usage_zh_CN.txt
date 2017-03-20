@@ -17,6 +17,6 @@
 	例子：
 	com.sea.ftp.boot.BootStartup start 使用默认配置启动FTP服务器。
 	com.sea.ftp.boot.BootStartup start -config ./conf/config.xml 使用config.xml中的配置启动FTP服务器。
-	com.sea.ftp.boot.BootStartup start -h 127.0.0.1  启动FTP服务器绑定IP为127.0.0.1 。
-	com.sea.ftp.boot.BootStartup start -p 21 启动FTP服务器,端口为21。
+	com.sea.ftp.boot.BootStartup start -h 192.168.1.100  启动FTP服务器绑定IP为192.168.1.100 ，端口为21。
+	com.sea.ftp.boot.BootStartup start -p 121 启动FTP服务器IP为127.0.0.1 ,端口为121。
 	com.sea.ftp.boot.BootStartup start -ssl 启动FTP服务器,使用SSL。

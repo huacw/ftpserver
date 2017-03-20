@@ -16,6 +16,6 @@ Help: [OPTION] [PARAMS] com.sea.ftp.boot.BootStartup
 	Example：
 	com.sea.ftp.boot.BootStartup start Start FTP Server using default configuration.
 	com.sea.ftp.boot.BootStartup start -config ./conf/config.xml Start FTP Server using the configuration of config.xml.
-	com.sea.ftp.boot.BootStartup start -h 127.0.0.1  Start FTP Server ,the IP is 127.0.0.1.
-	com.sea.ftp.boot.BootStartup start -p 21 Start FTP Server ,the port is 127.0.0.1.
+	com.sea.ftp.boot.BootStartup start -h 192.168.1.100  Start FTP Server ,the IP is 192.168.1.100 and the Port is 21.
+	com.sea.ftp.boot.BootStartup start -p 121 Start FTP Server ,the IP is 127.0.0.1 and the Port is 121.
 	com.sea.ftp.boot.BootStartup start -ssl Start FTP Server using SSL.
