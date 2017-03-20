@@ -28,7 +28,7 @@ public class IDCardValidator {
 	 */
 	public static boolean validate(String idCard) {
 		// 基本验证
-		String reg = "^(11|12|13|14|15|21|22|23|31|32|32|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82)(\\d{2})(\\d{2})(\\d{8})\\d{3}([0-9X])$";
+		String reg = "^(11|12|13|14|15|21|22|23|31|32|32|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82)(\\d{2})(\\d{2})(\\d{8})\\d{3}([0-9Xx])$";
 		Pattern pattern = Pattern.compile(reg);
 		Matcher matcher = pattern.matcher(idCard);
 		if (matcher.find()) {
@@ -41,7 +41,7 @@ public class IDCardValidator {
 				for (int i = 0; i < length - 1; i++) {
 					sum += Integer.parseInt(idCard.substring(i, i + 1)) * weights[i];
 				}
-				return factors[sum % 11].equals(matcher.group(5));
+				return factors[sum % 11].equalsIgnoreCase(matcher.group(5));
 			} catch (DateTimeException e) {
 				return false;
 			}
