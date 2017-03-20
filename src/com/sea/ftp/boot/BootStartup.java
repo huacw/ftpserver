@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.sea.ftp.exception.FTPServerException;
+import com.sea.ftp.exception.illegal.IllegalArgumentException;
 import com.sea.ftp.message.MessageCode;
 import com.sea.ftp.message.MessageCode.MessageType;
 import com.sea.ftp.message.i18n.LocalizedMessageResource;
@@ -20,13 +21,12 @@ import com.sea.ftp.server.FTPServerFactory;
 import com.sea.ftp.server.impl.DefaultFTPServer;
 import com.sea.ftp.server.impl.config.xml.XmlConfigFTPServer;
 import com.sea.ftp.util.StringUtils;
-import com.sea.ftp.exception.illegal.IllegalArgumentException;
 
 /**
  * 
  * FTP服务器启动入口（单独部署FTP服务器时）
  * 
- * @author sea 
+ * @author sea
  */
 public class BootStartup {
 	private static final String CMD_HELP = "help";
@@ -36,12 +36,11 @@ public class BootStartup {
 	private static final String CMD_START = "start";
 	private static int MODE_DEFAULT = 1;// 默认创建模式
 	private static int MODE_CONFIG = 2;// 配置文件的创建模式
-	private static int MODE_ARGS = 2;// 命令行的创建模式
+	private static int MODE_ARGS = 3;// 命令行的创建模式
 	private static Logger logger = Logger.getLogger(BootStartup.class);
 	private static MessageCode code = MessageCode.newMessageCode(MessageType.Info);
-	private static LocalizedMessageResource lmr = LocalizedMessageResource
-			.newInstance();
-	private static StringBuffer helpDoc = new StringBuffer();
+	private static LocalizedMessageResource lmr = LocalizedMessageResource.newInstance();
+	private static StringBuilder helpDoc = new StringBuilder();
 
 	/** 命令行参数 */
 	private static String command = CMD_START;// 执行命令
@@ -66,8 +65,7 @@ public class BootStartup {
 		}
 
 		// 获取已注册的FTP服务器
-		List<FTPServer> registeredServers = FTPServerFactory
-				.getRegisteredServers();
+		List<FTPServer> registeredServers = FTPServerFactory.getRegisteredServers();
 
 		if (CMD_START.equalsIgnoreCase(command)) {
 			code.setMsgKey("server.starting");
@@ -120,10 +118,8 @@ public class BootStartup {
 		if (args.length == 1) {
 			command = args[0];
 			// 如果命令为start、stop、suspend、resume时，按默认配置文件解析
-			if (CMD_START.equalsIgnoreCase(command)
-					|| CMD_STOP.equalsIgnoreCase(command)
-					|| CMD_SUSPENDED.equalsIgnoreCase(command)
-					|| CMD_RESUME.equalsIgnoreCase(command)) {
+			if (CMD_START.equalsIgnoreCase(command) || CMD_STOP.equalsIgnoreCase(command)
+					|| CMD_SUSPENDED.equalsIgnoreCase(command) || CMD_RESUME.equalsIgnoreCase(command)) {
 				buildFTPServer(MODE_DEFAULT);
 			}
 			return true;
@@ -144,37 +140,52 @@ public class BootStartup {
 			}
 			buildFTPServer(MODE_CONFIG);
 		} else {
-			for (int i = 1; i < length; i++) {
-				String arg = args[i];
-				if ("-h".equalsIgnoreCase(arg)) {// 使用-h参数，后面需指定IP
-					if (i <= length - 1) {
-						return false;
-					}
-					if (vaildIP(args[i + 1])) {
-						i++;
-					} else {
-						return false;
-					}
-				} else if ("-p".equalsIgnoreCase(arg)) {// 使用-p参数，后面需指定端口
-					if (i <= length - 1) {
-						return false;
-					}
-					try {
-						port = Integer.parseInt(args[i + 1]);
-						if (port < 0 || port > 65535) {// 端口范围0-65535
-							return false;
-						}
-						i++;
-					} catch (NumberFormatException e) {
-						return false;
-					}
-				} else if ("-ssl".equalsIgnoreCase(arg)) {// 使用-ssl参数
-					ssl = true;
+			if (parseArgs(args, length)) {
+				buildFTPServer(MODE_ARGS);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 解析系统参数
+	 * 
+	 * @param args
+	 * @param length
+	 * @return
+	 */
+	private static boolean parseArgs(String[] args, int length) {
+		for (int i = 1; i < length; i++) {
+			String arg = args[i];
+			if ("-h".equalsIgnoreCase(arg)) {// 使用-h参数，后面需指定IP
+				if (i <= length - 1) {
+					return false;
+				}
+				if (vaildIP(args[i + 1])) {
+					i++;
 				} else {
 					return false;
 				}
+			} else if ("-p".equalsIgnoreCase(arg)) {// 使用-p参数，后面需指定端口
+				if (i <= length - 1) {
+					return false;
+				}
+				try {
+					port = Integer.parseInt(args[i + 1]);
+					if (port < 0 || port > 65535) {// 端口范围0-65535
+						return false;
+					}
+					i++;
+				} catch (NumberFormatException e) {
+					return false;
+				}
+			} else if ("-ssl".equalsIgnoreCase(arg)) {// 使用-ssl参数
+				ssl = true;
+			} else {
+				return false;
 			}
-			buildFTPServer(MODE_ARGS);
 		}
 		return true;
 	}
@@ -189,12 +200,10 @@ public class BootStartup {
 		if (mode == MODE_DEFAULT || mode == MODE_CONFIG) {
 			new XmlConfigFTPServer(configFile);
 		} else if (mode == MODE_ARGS) {
-			FTPServerFactory.registerFTPServer(
-					FTPServerFactory.DEFAULT_SERVER_NAME,
-					initServer(host, port));
+			FTPServerFactory.registerFTPServer(FTPServerFactory.DEFAULT_SERVER_NAME, initServer(host, port));
 		} else {
 			code.setMsgKey("illegalargs");
-			throw new IllegalArgumentException(lmr.getMessage(code, mode + ""));
+			throw new IllegalArgumentException(lmr.getMessage(code, String.valueOf(mode)));
 		}
 	}
 
@@ -210,10 +219,7 @@ public class BootStartup {
 			return true;
 		} else {
 			// IP正则表达式
-			String regex = "^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\."
-					+ "(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\."
-					+ "(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\."
-					+ "(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$";
+			String regex = "^(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d{1,2}|1\\d\\d|2[0-4]\\d|25[0-5])$";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(arg);
 			return matcher.find();
@@ -230,7 +236,7 @@ public class BootStartup {
 	 * @return 创建的FTP服务器
 	 */
 	private static FTPServer initServer(String host, int port) {
-		FTPServer server = null;
+		FTPServer server;
 		if (StringUtils.isBlank(host)) {
 			server = new DefaultFTPServer(port, ssl);
 		} else {
@@ -246,7 +252,7 @@ public class BootStartup {
 		if (StringUtils.isBlank(helpDoc.toString())) {
 			readHelp();
 		}
-		System.err.println(helpDoc);
+		System.out.println(helpDoc);
 	}
 
 	/**
@@ -262,12 +268,11 @@ public class BootStartup {
 			docFile += "_" + lang + ".txt";
 		}
 		try {
-			br = new BufferedReader(new InputStreamReader(BootStartup.class
-					.getClassLoader().getResourceAsStream(docFile), "UTF-8"));
+			br = new BufferedReader(
+					new InputStreamReader(BootStartup.class.getClassLoader().getResourceAsStream(docFile), "UTF-8"));
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				helpDoc.append(line).append(
-						System.getProperty(("line.separator")));
+				helpDoc.append(line).append(System.getProperty(("line.separator")));
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
