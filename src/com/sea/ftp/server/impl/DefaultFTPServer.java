@@ -13,15 +13,6 @@
 
 package com.sea.ftp.server.impl;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.util.SelfSignedCertificate;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -39,6 +30,15 @@ import com.sea.ftp.message.MessageResource;
 import com.sea.ftp.message.i18n.LocalizedMessageResource;
 import com.sea.ftp.server.FTPServer;
 import com.sea.ftp.util.StringUtils;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 /**
  * 默认的FTP服务器
@@ -142,7 +142,7 @@ public class DefaultFTPServer implements FTPServer {
 				future = b.bind(host, port).sync();
 			}
 			code.setMsgKey("server.started");
-			logger.info(lmr.getMessage(code, port + ""));
+			logger.info(lmr.getMessage(code, String.valueOf(port)));
 			started = true;
 			future.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
