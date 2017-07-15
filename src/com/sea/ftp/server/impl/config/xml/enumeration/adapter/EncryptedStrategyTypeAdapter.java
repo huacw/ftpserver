@@ -15,7 +15,7 @@ package com.sea.ftp.server.impl.config.xml.enumeration.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.sea.ftp.server.impl.config.xml.enumeration.EncryptedStrategyType;
+import com.sea.ftp.enumeration.EncryptedStrategyType;
 
 /**
  * 

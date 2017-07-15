@@ -1,4 +1,4 @@
-package com.sea.ftp.server.impl.config.xml.enumeration;
+package com.sea.ftp.enumeration;
 
 /**
  * 

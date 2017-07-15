@@ -3,10 +3,10 @@ package com.sea.ftp.user.factory.builder.impl;
 import java.io.File;
 import java.util.List;
 
+import com.sea.ftp.enumeration.EncryptedStrategyType;
 import com.sea.ftp.exception.illegal.IllegalConfigException;
 import com.sea.ftp.server.impl.config.xml.bean.User;
 import com.sea.ftp.server.impl.config.xml.bean.VirtualPath;
-import com.sea.ftp.server.impl.config.xml.enumeration.EncryptedStrategyType;
 import com.sea.ftp.user.UserManager;
 import com.sea.ftp.user.authority.Authority;
 import com.sea.ftp.user.factory.AnonymousUserFactory;

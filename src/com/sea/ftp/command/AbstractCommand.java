@@ -33,8 +33,7 @@ public abstract class AbstractCommand implements Command {
      * @param args
      */
     protected void write(CommandContext context, int code, String... args) {
-        ChannelHandlerContext ctx =
-                (ChannelHandlerContext) context.getResponse().getAtrribute(Constants.KEY_SESSION_STREAM);
+        ChannelHandlerContext ctx = (ChannelHandlerContext) context.getResponse().getAtrribute(Constants.KEY_SESSION_STREAM);
         if (logger.isInfoEnabled()) {
             logger.info(reply.getMessage(code, args));
         }
@@ -78,7 +77,7 @@ public abstract class AbstractCommand implements Command {
      */
     private void checkAuth(CommandContext context) {
         String cmdName = this.getClass().getSimpleName();
-        if ("USER".equals(cmdName) || "PASS".equals(cmdName)) {
+        if ("USER".equals(cmdName) || "PASS".equals(cmdName) || "ACCT".equals(cmdName)) {
             return;
         }
         User loginUser = (User) context.getFtpServerSession().getAtrribute(Constants.KEY_LOGIN_USER);

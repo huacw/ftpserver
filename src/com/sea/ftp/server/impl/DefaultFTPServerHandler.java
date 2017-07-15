@@ -119,7 +119,7 @@ public class DefaultFTPServerHandler extends FTPServerHandler {
             serverContext.getCommandFactory().getCommand(cmd).execute(cmdContext);
         } catch (IllegalCommandException e) {
             FtpReply reply = new LocalizedFTPReply();
-            ctx.writeAndFlush(reply.getMessage(500, e.getMessage()) + "\n");
+            ctx.writeAndFlush(reply.getMessage(FtpReply.REPLY_500_SYNTAX_ERROR_COMMAND_UNRECOGNIZED, e.getMessage()) + "\n");
         } catch (FTPIOException e) {
             logger.error(e.getMessage(), e);
         }

@@ -2,7 +2,7 @@ package com.sea.ftp.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.sea.ftp.server.impl.config.xml.enumeration.EncryptedStrategyType;
+import com.sea.ftp.enumeration.EncryptedStrategyType;
 
 /**
  * 

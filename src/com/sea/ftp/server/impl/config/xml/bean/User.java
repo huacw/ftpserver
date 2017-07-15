@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.sea.ftp.server.impl.config.xml.enumeration.EncryptedStrategyType;
+import com.sea.ftp.enumeration.EncryptedStrategyType;
 import com.sea.ftp.server.impl.config.xml.enumeration.adapter.EncryptedStrategyTypeAdapter;
 
 /**

@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sea.ftp.constants.Constants;
+import com.sea.ftp.enumeration.EncryptedStrategyType;
 import com.sea.ftp.exception.illegal.IllegalArgumentException;
 import com.sea.ftp.exception.illegal.IllegalConfigException;
 import com.sea.ftp.exception.illegal.NotFoundException;
-import com.sea.ftp.server.impl.config.xml.enumeration.EncryptedStrategyType;
 import com.sea.ftp.user.authority.Authority;
 import com.sea.ftp.util.StringUtils;
 

@@ -31,4 +31,9 @@ public class DefaultFTPServerRequest extends AbstractContext implements
 		throw new IllegalArgumentException("illegal.session.data");
 	}
 
+    @Override
+    public String[] getArgs() {
+        return (String[]) getAtrribute(FTP_REQUEST_CMD_ARGS);
+    }
+
 }
