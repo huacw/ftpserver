@@ -15,12 +15,10 @@ import com.sea.ftp.exception.FTPServerException;
 import com.sea.ftp.server.connection.DataConnection;
 
 /**
- * <strong>Internal class, do not use directly.</strong>
+ * 数据连接工厂实现
  * 
- * We can get the FTP data connection using this class. It uses either PORT or
- * PASV command.
+ * @author sea
  *
- * @author <a href="http://mina.apache.org">Apache MINA Project</a>
  */
 public class IODataConnectionFactory implements ServerDataConnectionFactory {
 
