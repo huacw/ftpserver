@@ -3,7 +3,9 @@ package com.sea.ftp.server.context.session;
 import com.sea.ftp.context.AbstractContext;
 import com.sea.ftp.context.session.FTPServerSession;
 import com.sea.ftp.exception.illegal.NotFoundException;
+import com.sea.ftp.ftplet.DataType;
 import com.sea.ftp.ftplet.FileSystemView;
+import com.sea.ftp.server.connection.DataConnectionFactory;
 import com.sea.ftp.user.User;
 
 /**
@@ -22,6 +24,10 @@ public class DefaultFTPServerSession extends AbstractContext implements FTPServe
 	 * 当前用户键值
 	 */
 	public static final String KEY_SYSTEM_FILE_VIEW = "ftp.server.systemfile.view";
+	/**
+	 * 数据传输类型键
+	 */
+	public static final String KEY_TRANSFER_DATA_TYPE = "ftp.server.session.transfer.datatype";
 
 	@Override
 	public User getCurrentUser() {
@@ -40,6 +46,7 @@ public class DefaultFTPServerSession extends AbstractContext implements FTPServe
 	 * 
 	 * @param view
 	 */
+	@Override
 	public void setSystemFileView(FileSystemView view) {
 		setAtrribute(KEY_SYSTEM_FILE_VIEW, view);
 	}
@@ -49,7 +56,25 @@ public class DefaultFTPServerSession extends AbstractContext implements FTPServe
 	 * 
 	 * @return
 	 */
+	@Override
 	public FileSystemView getSystemFileView() {
 		return (FileSystemView) getAtrribute(KEY_SYSTEM_FILE_VIEW);
+	}
+
+	@Override
+	public DataConnectionFactory getDataConnectionFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DataType getDataType() {
+		Object atrribute = getAtrribute(KEY_TRANSFER_DATA_TYPE);
+		return atrribute == null ? DataType.ASCII : (DataType) atrribute;
+	}
+
+	@Override
+	public void setDataType(DataType dataType) {
+		setAtrribute(KEY_TRANSFER_DATA_TYPE, dataType);
 	}
 }

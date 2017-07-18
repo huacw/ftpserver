@@ -13,7 +13,7 @@ import com.sea.ftp.exception.FTPServerException;
  * 
  * FTP服务器工厂
  *
- * @author sea 
+ * @author sea
  */
 public class FTPServerFactory {
 	/**
@@ -43,10 +43,9 @@ public class FTPServerFactory {
 	 * @throws FTPServerException
 	 *             该名称的服务器已经注册过时抛出
 	 */
-	public synchronized static void registerFTPServer(String name,
-			FTPServer server) throws FTPServerException {
+	public synchronized static void registerFTPServer(String name, FTPServer server) throws FTPServerException {
 		if (isRegisteredServer(name)) {
-			throw new FTPServerException("");
+			throw new FTPServerException(String.format("重复的服务器名称【%s】", name));
 		}
 		registeredServers.put(name, server);
 	}

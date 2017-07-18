@@ -1,7 +1,9 @@
 package com.sea.ftp.context.session;
 
 import com.sea.ftp.context.Context;
+import com.sea.ftp.ftplet.DataType;
 import com.sea.ftp.ftplet.FileSystemView;
+import com.sea.ftp.server.connection.DataConnectionFactory;
 import com.sea.ftp.user.User;
 
 /**
@@ -31,4 +33,25 @@ public interface FTPServerSession extends Context {
 	 * @return
 	 */
 	public FileSystemView getSystemFileView();
+
+	/**
+	 * 获取数据连接
+	 * 
+	 * @return
+	 */
+	public DataConnectionFactory getDataConnectionFactory();
+
+	/**
+	 * 获取数据传输类型
+	 * 
+	 * @return
+	 */
+	public DataType getDataType();
+
+	/**
+	 * 设置数据传输类型
+	 * 
+	 * @param dataType
+	 */
+	public void setDataType(DataType dataType);
 }
