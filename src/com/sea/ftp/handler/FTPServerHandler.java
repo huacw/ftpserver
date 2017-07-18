@@ -1,21 +1,20 @@
 package com.sea.ftp.handler;
 
-import io.netty.channel.SimpleChannelInboundHandler;
-
 import org.apache.log4j.Logger;
 
 import com.sea.ftp.context.application.FTPServerContext;
 import com.sea.ftp.message.MessageResource;
 import com.sea.ftp.message.i18n.LocalizedMessageResource;
 
+import io.netty.channel.SimpleChannelInboundHandler;
+
 /**
  * 
  * FTP服务器处理器
  * 
- * @author sea 
+ * @author sea
  */
-public abstract class FTPServerHandler extends
-		SimpleChannelInboundHandler<String> {
+public abstract class FTPServerHandler extends SimpleChannelInboundHandler<String> {
 	protected Logger logger = Logger.getLogger(getClass());
 
 	// FTP服务器上下文
@@ -32,8 +31,7 @@ public abstract class FTPServerHandler extends
 	}
 
 	public MessageResource getMessageResource() {
-		return messageResource == null ? LocalizedMessageResource.newInstance()
-				: messageResource;
+		return messageResource == null ? LocalizedMessageResource.newInstance() : messageResource;
 	}
 
 	public void setMessageResource(MessageResource messageResource) {
