@@ -22,6 +22,7 @@ public class MultilanguageMessageResource extends AbstractMessageResouce {
 			add(Locale.getDefault().toString());
 			add(Locale.US.toString());
 			add(Locale.ENGLISH.toString());
+			add(Locale.CHINESE.toString());
 		}
 	};
 
@@ -70,7 +71,16 @@ public class MultilanguageMessageResource extends AbstractMessageResouce {
 	 *            语言
 	 */
 	public void setDefaultLanguage(String language) {
-		setDefaultLanguage(Locale.forLanguageTag(language));
+		if (StringUtils.isBlank(language)) {
+			setDefaultLanguage(Locale.getDefault());
+			return;
+		}
+		if (language.contains("_")) {
+			String[] lanArray = language.split("_");
+			setDefaultLanguage(new Locale(lanArray[0], lanArray[1]));
+		} else {
+			setDefaultLanguage(new Locale(language));
+		}
 	}
 
 	/**

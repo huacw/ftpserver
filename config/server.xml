@@ -2,14 +2,17 @@
 <configuration>
 	<server id="server">
 		<!-- FTP服务器监听器（必选项） -->
-		<listener name="l1" host="127.0.0.1" port="21" shutdown-port="22"
-			charset="GBK">
+		<listener name="l1" host="127.0.0.1" port="21" shutdown-port="22" charset="GBK">
 			<ssl enable="false" />
+			<data-connection idle-timeout="60" ssl="false">
+				<active enabled="true" local-address="1.2.3.4" local-port="2323" ip-check="true" />
+				<passive ports="123-125" address="1.2.3.4" external-address="1.2.3.4" />
+			</data-connection>
 		</listener>
 		<!-- FTP服务器用户管理（必选项） -->
 		<!-- 本文件中配置用户 -->
-		<user-manager type="none" anonymous="" encrypt-password="true"
-			encrypt-strategy="MD5" anonymous-authority="" anonymous-path="">
+		<user-manager type="none" anonymous="true" encrypt-password="true"
+			encrypt-strategy="MD5" anonymous-authority="" anonymous-path="e:/">
 			<user user-name="U1" password="e10adc3949ba59abbe56e057f20f883e" home="d:/" authority="W,R"
 				encrypt-strategy="MD5">
 				<virtual-path name="/user" path="d:/" authority="" />

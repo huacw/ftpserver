@@ -19,7 +19,7 @@ public class Command {
 	@XmlAttribute(name = "cmd-class", required = true)
 	private String clazz;
 	@XmlAttribute(name = "use-default")
-	private boolean useDefault = false;
+	private Boolean useDefault;
 
 	public String getCmdName() {
 		return cmdName;
@@ -37,11 +37,11 @@ public class Command {
 		this.clazz = clazz;
 	}
 
-	public boolean isUseDefault() {
+	public Boolean isUseDefault() {
 		return useDefault;
 	}
 
-	public void setUseDefault(boolean useDefault) {
+	public void setUseDefault(Boolean useDefault) {
 		this.useDefault = useDefault;
 	}
 }

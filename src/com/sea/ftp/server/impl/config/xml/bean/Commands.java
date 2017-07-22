@@ -18,14 +18,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Commands {
 	@XmlAttribute(name = "use-default")
-	private boolean useDefault = false;
+	private Boolean useDefault;
 	private List<Command> commands;
 
-	public boolean isUseDefault() {
+	public Boolean isUseDefault() {
 		return useDefault;
 	}
 
-	public void setUseDefault(boolean useDefault) {
+	public void setUseDefault(Boolean useDefault) {
 		this.useDefault = useDefault;
 	}
 

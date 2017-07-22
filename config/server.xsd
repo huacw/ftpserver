@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 (http://www.altova.com) by sea (mtime) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.sea.net/ftpserver" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://www.sea.net/ftpserver" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="configuration" type="ns1:configuration" abstract="false" nillable="false">
+		<xs:annotation>
+			<xs:documentation>服务器根节点</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="server">
+		<xs:annotation>
+			<xs:documentation>服务器节点</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="listener" type="ns1:listener"/>
+			<xs:element name="user-manager" type="ns1:user-manager"/>
+			<xs:element name="native-filesystem">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ns1:native-filesystem">
+							<xs:attribute name="case-insensitive" type="xs:boolean" default="false"/>
+							<xs:attribute name="create-workdir" type="xs:boolean" default="false"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="message">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ns1:message">
+							<xs:attribute name="languages">
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="zh_CN"/>
+										<xs:enumeration value="en_US"/>
+										<xs:enumeration value=""/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="commands" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ns1:commands">
+							<xs:sequence>
+								<xs:element name="command" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ns1:command">
+												<xs:attribute name="name" type="xs:ID" use="required"/>
+												<xs:attribute name="cmd-class" type="xs:string" use="required"/>
+												<xs:attribute name="use-default" type="xs:boolean" use="optional"/>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="use-default" type="xs:boolean" use="optional" default="false"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="id" type="ns1:serverId" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="listener">
+		<xs:annotation>
+			<xs:documentation>服务器监听器节点</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="ssl" type="ns1:ssl" minOccurs="0"/>
+			<xs:element name="data-connection" type="ns1:data-connection"/>
+		</xs:all>
+		<xs:attribute name="name" type="ns1:listenerName" use="required"/>
+		<xs:attribute name="host" use="optional" default="0.0.0.0">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="port" use="optional" default="21">
+			<xs:simpleType>
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="65535"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="shutdown-port" use="optional" default="22">
+			<xs:simpleType>
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="65535"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="charset" use="optional" default="UTF-8">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="GBK"/>
+					<xs:enumeration value="UTF-8"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="user-manager">
+		<xs:annotation>
+			<xs:documentation>用户管理节点</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="user" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ns1:user">
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="virtual-path">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ns1:virtual-path">
+												<xs:attribute name="name" type="xs:string" use="required"/>
+												<xs:attribute name="path" type="xs:string" use="required"/>
+												<xs:attribute name="authority" type="ns1:authorityType"/>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="none"/>
+					<xs:enumeration value="file"/>
+					<xs:enumeration value="db"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="ns1:anonymousUserAttrGroup"/>
+		<xs:attribute name="encrypt-password" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute ref="ns1:encrypt-strategy"/>
+	</xs:complexType>
+	<xs:complexType name="native-filesystem">
+		<xs:annotation>
+			<xs:documentation>本地文件系统节点</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="message">
+		<xs:annotation>
+			<xs:documentation>服务输出消息配置节点</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="user">
+		<xs:annotation>
+			<xs:documentation>用户节点</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="user-name" type="ns1:userName" use="required"/>
+		<xs:attribute name="password" type="xs:string" use="required"/>
+		<xs:attribute name="home" type="xs:string" use="required"/>
+		<xs:attribute name="authority" type="ns1:authorityType" use="required"/>
+		<xs:attribute ref="ns1:encrypt-strategy"/>
+	</xs:complexType>
+	<xs:complexType name="commands">
+		<xs:annotation>
+			<xs:documentation>服务命令节点</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="command">
+		<xs:annotation>
+			<xs:documentation>服务器命令</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ssl">
+		<xs:annotation>
+			<xs:documentation>ssl节点</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="enable" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="virtual-path">
+		<xs:annotation>
+			<xs:documentation>虚拟路径节点</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="configuration">
+		<xs:annotation>
+			<xs:documentation>服务器根节点</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="server" type="ns1:server"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="data-connection">
+		<xs:annotation>
+			<xs:documentation>数据连接节点</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="idle-timeout" type="xs:long" use="optional"/>
+		<xs:attribute name="ssl" type="xs:boolean" use="optional"/>
+		<xs:attribute name="idle-timeout-unit" use="optional" default="ms">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="ms"/>
+					<xs:enumeration value="s"/>
+					<xs:enumeration value="m"/>
+					<xs:enumeration value="h"/>
+					<xs:enumeration value="d"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:attributeGroup name="anonymousUserAttrGroup">
+		<xs:annotation>
+			<xs:documentation>匿名用户属性组</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="anonymous" type="xs:boolean" use="optional"/>
+		<xs:attribute name="anonymous-authority" type="ns1:authorityType" use="optional"/>
+		<xs:attribute name="anonymous-path" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+	<xs:attribute name="encrypt-strategy">
+		<xs:annotation>
+			<xs:documentation>加密策略属性</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:token">
+				<xs:enumeration value="MD2"/>
+				<xs:enumeration value="MD5"/>
+				<xs:enumeration value="SHA1"/>
+				<xs:enumeration value="SHA256"/>
+				<xs:enumeration value="SHA384"/>
+				<xs:enumeration value="SHA512"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:simpleType name="authorityType">
+		<xs:annotation>
+			<xs:documentation>认证类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(R|W|D|FC|FD|RN|APD|){1,}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="serverId">
+		<xs:annotation>
+			<xs:documentation>服务器id</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:ID"/>
+	</xs:simpleType>
+	<xs:simpleType name="listenerName">
+		<xs:annotation>
+			<xs:documentation>监听名称</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:time"/>
+	</xs:simpleType>
+	<xs:simpleType name="userName">
+		<xs:annotation>
+			<xs:documentation>用户名称</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

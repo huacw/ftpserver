@@ -57,7 +57,8 @@ public class XmlConfigFTPServer {
 		if (!configFile.isAbsolute()) {
 			configFile = new File(System.getProperty("user.dir"), config);
 		}
-		ServerConfiguration serverConfiguration = (ServerConfiguration) JAXBUtils.xmlToBean(configFile, ServerConfiguration.class);
+		ServerConfiguration serverConfiguration = (ServerConfiguration) JAXBUtils.xmlToBean(configFile,
+				ServerConfiguration.class);
 		List<Server> servers = serverConfiguration.getServers();
 		// 创建FTP服务器
 		for (Server server : servers) {
@@ -109,12 +110,14 @@ public class XmlConfigFTPServer {
 	 */
 	private void initMessageManager(Server server, DefaultFTPServer ftpServer) {
 		if (server.getMessage() == null) {
-			ftpServer.getFtpServerInitializer().getServerHandler().setMessageResource(LocalizedMessageResource.newInstance());
+			ftpServer.getFtpServerInitializer().getServerHandler()
+					.setMessageResource(LocalizedMessageResource.newInstance());
 			return;
 		}
 		String lang = server.getMessage().getLanguages();
 		if (StringUtils.isBlank(lang)) {
-			ftpServer.getFtpServerInitializer().getServerHandler().setMessageResource(LocalizedMessageResource.newInstance());
+			ftpServer.getFtpServerInitializer().getServerHandler()
+					.setMessageResource(LocalizedMessageResource.newInstance());
 			return;
 		}
 		MultilanguageMessageResource mr = new MultilanguageMessageResource();
@@ -132,8 +135,8 @@ public class XmlConfigFTPServer {
 	 */
 	private void initManager(Server server, DefaultFTPServer ftpServer) {
 		DefaultFTPServerInitializer ftpServerInitializer = new DefaultFTPServerInitializer(ftpServer.getCharset());
-		DefaultFTPServerContext serverContext = new DefaultFTPServerContext(initCommandFactory(server.getCommands()), initUserManager(server.getUm(), server.getNf() == null ? false : server.getNf()
-				.isCreateWorkdir()));
+		DefaultFTPServerContext serverContext = new DefaultFTPServerContext(initCommandFactory(server.getCommands()),
+				initUserManager(server.getUm(), server.getNf() == null ? false : server.getNf().isCreateWorkdir()));
 		ftpServerInitializer.getServerHandler().setServerContext(serverContext);
 		ftpServer.setFtpServerInitializer(ftpServerInitializer);
 		initFileSystemView(server, ftpServer, serverContext);
@@ -153,7 +156,8 @@ public class XmlConfigFTPServer {
 		if (cmds == null || cmds.isEmpty()) {
 			return commandFactory;
 		}
-		boolean useDefault = commands.isUseDefault();
+		Boolean useDefault = commands.isUseDefault();
+		useDefault = useDefault == null ? false : useDefault;
 		for (Command command : cmds) {
 			Object cmd = null;
 			try {
@@ -164,7 +168,8 @@ public class XmlConfigFTPServer {
 			if (!(cmd instanceof com.sea.ftp.command.Command)) {
 				throw new IllegalConfigException("illegalcommand.ex", null, command.getCmdName());
 			}
-			commandFactory.registerCommand(command.getCmdName(), (com.sea.ftp.command.Command) cmd, useDefault ? useDefault : command.isUseDefault());
+			commandFactory.registerCommand(command.getCmdName(), (com.sea.ftp.command.Command) cmd,
+					command.isUseDefault() != null ? command.isUseDefault() : useDefault);
 		}
 		return commandFactory;
 	}
@@ -197,7 +202,8 @@ public class XmlConfigFTPServer {
 		ftpServer.setPort(listener.getPort());
 		ftpServer.setShutdownPort(listener.getShutdownPort());
 		// 设置默认编码
-		ftpServer.setCharset(StringUtils.isBlank(listener.getCharset()) ? Charset.defaultCharset() : Charset.forName(listener.getCharset()));
+		ftpServer.setCharset(StringUtils.isBlank(listener.getCharset()) ? Charset.defaultCharset()
+				: Charset.forName(listener.getCharset()));
 		SSLConfiguration ssl = listener.getSsl();
 		if (ssl != null) {
 			ftpServer.setSSL(ssl.isEnable());
