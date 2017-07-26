@@ -1,5 +1,10 @@
 package com.sea.ftp.server.impl;
 
+import java.nio.charset.Charset;
+
+import com.sea.ftp.constants.FtpserverConstants;
+import com.sea.ftp.handler.FTPServerHandler;
+
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -9,18 +14,13 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.ssl.SslContext;
 
-import java.nio.charset.Charset;
-
-import com.sea.ftp.handler.FTPServerHandler;
-
 /**
  * 默认FTP服务器初始化加载器
  * 
  * @author sea
  * 
  */
-public class DefaultFTPServerInitializer extends
-		ChannelInitializer<SocketChannel> {
+public class DefaultFTPServerInitializer extends ChannelInitializer<SocketChannel> {
 	private StringDecoder DECODER;
 	private StringEncoder ENCODER;
 
@@ -67,8 +67,10 @@ public class DefaultFTPServerInitializer extends
 			pipeline.addLast(sslCtx.newHandler(ch.alloc()));
 		}
 
-		pipeline.addLast(
+		pipeline.addLast(FtpserverConstants.HANDLER_NAME_DELIMITER_DECODER,
 				new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
-				.addLast(DECODER).addLast(ENCODER).addLast(SERVER_HANDLER);
+				.addLast(FtpserverConstants.HANDLER_NAME_CHARSET_DECODER, DECODER)
+				.addLast(FtpserverConstants.HANDLER_NAME_CHARSET_ENCODER, ENCODER)
+				.addLast(FtpserverConstants.HANDLER_NAME_FTPSERVER_HANDLER, SERVER_HANDLER);
 	}
 }
