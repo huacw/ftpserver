@@ -169,7 +169,7 @@ public class DefaultFTPServerHandler extends FTPServerHandler {
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		cause.printStackTrace();
+		ctx.close();
 		logger.error("连接异常", cause);
 	}
 }
