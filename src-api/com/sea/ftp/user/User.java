@@ -181,7 +181,7 @@ public class User {
 	 * @return
 	 */
 	public String getAbstractUserPath(String accessPath) {
-		String[] results = parseAccessPath(new File(accessPath));
+		String[] results = parseAccessPath(accessPath);
 		return getAbstractUserPath(results[0], results[1]);
 	}
 
@@ -192,7 +192,7 @@ public class User {
 	 * @return
 	 */
 	public File getAbstractUserFile(String accessPath) {
-		String[] results = parseAccessPath(new File(accessPath));
+		String[] results = parseAccessPath(accessPath);
 		return getAbstractUserFile(results[0], results[1]);
 	}
 
@@ -202,9 +202,11 @@ public class User {
 	 * @param file
 	 * @return
 	 */
-	private String[] parseAccessPath(File file) {
+	private String[] parseAccessPath(String file) {
 		String workDirName = getWorkDirNameOfAccessPath(file);
-		String relativePath = file == null ? USER_HOME : file.getAbsolutePath().substring(file.getAbsolutePath().indexOf(workDirName) + workDirName.length());
+		String tmpFile = new File(workDirName).getAbsolutePath();
+		String relativePath = file == null || USER_HOME.equals(file) ? USER_HOME
+				: tmpFile.substring(tmpFile.indexOf(workDirName) + workDirName.length());
 		return new String[] { workDirName, relativePath };
 	}
 
@@ -214,15 +216,16 @@ public class User {
 	 * @param file
 	 * @return
 	 */
-	private String getWorkDirNameOfAccessPath(File file) {
-		if (file == null) {
+	private String getWorkDirNameOfAccessPath(String file) {
+		if (file == null || USER_HOME.equals(file)) {
 			return USER_HOME;
 		}
-		String parent = file.getParent();
+		File tmpFile = new File(file);
+		String parent = tmpFile.getParent();
 		if (workDirectroies.containsKey(parent)) {
-			return parent;
+			return parent.replaceAll(File.pathSeparator, "/");
 		} else {
-			return getWorkDirNameOfAccessPath(file.getParentFile());
+			return getWorkDirNameOfAccessPath(tmpFile.getAbsolutePath());
 		}
 	}
 

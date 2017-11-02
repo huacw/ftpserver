@@ -20,6 +20,10 @@ public interface FtpserverConstants {
 	 */
 	public static final String HANDLER_NAME_CHARSET_ENCODER = "charset-encoder";
 	/**
+	 * 分块解析器
+	 */
+	public static final String HANDLER_NAME_CHUNKED_HANDLER = "chunked-handler";
+	/**
 	 * ftpserver服务器的处理器
 	 */
 	public static final String HANDLER_NAME_FTPSERVER_HANDLER = "ftpserver-handler";

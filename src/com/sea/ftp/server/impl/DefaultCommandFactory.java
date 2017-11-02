@@ -54,8 +54,7 @@ public class DefaultCommandFactory implements CommandFactory {
 	private static Map<String, Command> registeredCmds = new HashMap<String, Command>();
 	private Map<String, Command> customCmds = new HashMap<String, Command>();
 	private MessageCode errorCode = MessageCode.newMessageCode(MessageType.Error);
-	private static LocalizedMessageResource lmr = LocalizedMessageResource
-			.newInstance();
+	private static LocalizedMessageResource lmr = LocalizedMessageResource.newInstance();
 
 	// 初始化FTP命令
 	static {
@@ -110,8 +109,7 @@ public class DefaultCommandFactory implements CommandFactory {
 	public Command getCommand(String cmdName) {
 		if (StringUtils.isBlank(cmdName)) {
 			errorCode.setMsgKey("illegalcommand");
-			throw new IllegalCommandException(lmr.getMessage(errorCode,
-					cmdName));
+			throw new IllegalCommandException(lmr.getMessage(errorCode, cmdName));
 		}
 		String upperCaseCmdName = cmdName.toUpperCase();
 		// 从用户扩展命令列表中查找
@@ -123,8 +121,7 @@ public class DefaultCommandFactory implements CommandFactory {
 		// 如果命令为空，则表明命令为非法命令
 		if (command == null) {
 			errorCode.setMsgKey("illegalcommand");
-			throw new IllegalCommandException(lmr.getMessage(errorCode,
-					cmdName));
+			throw new IllegalCommandException(lmr.getMessage(errorCode, cmdName));
 		}
 		return command;
 	}

@@ -35,6 +35,7 @@ public class PWD extends AbstractCommand {
 			write(context, FtpReply.REPLY_450_REQUESTED_FILE_ACTION_NOT_TAKEN);
 			return;
 		}
+		writeConent(context, FtpReply.REPLY_230_USER_LOGGED_IN, "\"a\"\n");
 	}
 
 }

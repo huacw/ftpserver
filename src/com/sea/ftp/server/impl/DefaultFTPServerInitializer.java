@@ -71,6 +71,9 @@ public class DefaultFTPServerInitializer extends ChannelInitializer<SocketChanne
 				new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
 				.addLast(FtpserverConstants.HANDLER_NAME_CHARSET_DECODER, DECODER)
 				.addLast(FtpserverConstants.HANDLER_NAME_CHARSET_ENCODER, ENCODER)
+				// .addLast(FtpserverConstants.HANDLER_NAME_CHUNKED_HANDLER, new
+				// ChunkedWriteHandler())
 				.addLast(FtpserverConstants.HANDLER_NAME_FTPSERVER_HANDLER, SERVER_HANDLER);
+		System.err.println(pipeline);
 	}
 }
