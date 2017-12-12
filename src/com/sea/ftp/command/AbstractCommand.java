@@ -35,12 +35,23 @@ public abstract class AbstractCommand implements Command {
 	 * @param args
 	 */
 	protected void write(CommandContext context, int code, String... args) {
-		ChannelHandlerContext ctx = (ChannelHandlerContext) context.getResponse()
-				.getAtrribute(Constants.KEY_SESSION_STREAM);
+		ChannelHandlerContext ctx = getSessionStream(context);
 		if (logger.isInfoEnabled()) {
 			logger.info(reply.getMessage(code, args));
 		}
 		ctx.writeAndFlush(new StringBuilder().append(reply.getMessage(code, args)).append("\n"));
+	}
+
+	/**
+	 * 获取会话流对象
+	 * 
+	 * @param context
+	 * @return
+	 */
+	protected ChannelHandlerContext getSessionStream(CommandContext context) {
+		ChannelHandlerContext ctx = (ChannelHandlerContext) context.getResponse()
+				.getAtrribute(Constants.KEY_SESSION_STREAM);
+		return ctx;
 	}
 
 	/**
@@ -54,8 +65,7 @@ public abstract class AbstractCommand implements Command {
 	 *            返回内容
 	 */
 	protected void writeConent(CommandContext context, int code, String content) {
-		ChannelHandlerContext ctx = (ChannelHandlerContext) context.getResponse()
-				.getAtrribute(Constants.KEY_SESSION_STREAM);
+		ChannelHandlerContext ctx = getSessionStream(context);
 		if (logger.isInfoEnabled()) {
 			logger.info(reply.getMessage(code));
 		}

@@ -66,7 +66,6 @@ public class DefaultFTPServerInitializer extends ChannelInitializer<SocketChanne
 		if (sslCtx != null) {
 			pipeline.addLast(sslCtx.newHandler(ch.alloc()));
 		}
-
 		pipeline.addLast(FtpserverConstants.HANDLER_NAME_DELIMITER_DECODER,
 				new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()))
 				.addLast(FtpserverConstants.HANDLER_NAME_CHARSET_DECODER, DECODER)

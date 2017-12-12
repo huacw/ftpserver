@@ -18,6 +18,7 @@ import com.sea.ftp.command.impl.MKD;
 import com.sea.ftp.command.impl.MODE;
 import com.sea.ftp.command.impl.NLST;
 import com.sea.ftp.command.impl.NOOP;
+import com.sea.ftp.command.impl.OPTS;
 import com.sea.ftp.command.impl.PASS;
 import com.sea.ftp.command.impl.PASV;
 import com.sea.ftp.command.impl.PORT;
@@ -92,6 +93,7 @@ public class DefaultCommandFactory implements CommandFactory {
 		registeredCmds.put("SYST", new SYST());
 		registeredCmds.put("TYPE", new TYPE());
 		registeredCmds.put("USER", new USER());
+		registeredCmds.put("OPTS", new OPTS());
 	}
 
 	public DefaultCommandFactory() {
