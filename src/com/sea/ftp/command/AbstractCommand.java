@@ -86,7 +86,6 @@ public abstract class AbstractCommand implements Command {
 		try {
 			done(context);
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error(e);
 		} finally {
 			after(context);

@@ -3,6 +3,10 @@ package com.sea.ftp.util;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.sea.ftp.enumeration.EncryptedStrategyType;
+import com.sea.ftp.exception.FTPServerRuntimeException;
+import com.sea.ftp.message.MessageCode;
+import com.sea.ftp.message.MessageCode.MessageType;
+import com.sea.ftp.message.i18n.LocalizedMessageResource;
 
 /**
  * 
@@ -11,6 +15,10 @@ import com.sea.ftp.enumeration.EncryptedStrategyType;
  * @author sea
  */
 public class CiphertextUtils {
+	private static LocalizedMessageResource lmr = LocalizedMessageResource.newInstance();
+
+	private CiphertextUtils() {
+	}
 
 	/**
 	 * 加密字符串
@@ -21,31 +29,26 @@ public class CiphertextUtils {
 	 *            算法(如:MD2,MD5,SHA1,SHA256,SHA384,SHA512)
 	 * @return
 	 */
-	public static String passAlgorithmsCiphering(String sourceStr,
-			EncryptedStrategyType algorithms) {
-		String password = "";
+	public static String passAlgorithmsCiphering(String sourceStr, EncryptedStrategyType algorithms) {
 		switch (algorithms) {
 			case MD2:
-				password = DigestUtils.md2Hex(sourceStr);
-				break;
+				return DigestUtils.md2Hex(sourceStr);
 			case MD5:
-				password = DigestUtils.md5Hex(sourceStr);
-				break;
+				return DigestUtils.md5Hex(sourceStr);
 			case SHA1:
-				password = DigestUtils.sha1Hex(sourceStr);
-				break;
+				return DigestUtils.sha1Hex(sourceStr);
 			case SHA256:
-				password = DigestUtils.sha256Hex(sourceStr);
-				break;
+				return DigestUtils.sha256Hex(sourceStr);
 			case SHA384:
-				password = DigestUtils.sha384Hex(sourceStr);
-				break;
+				return DigestUtils.sha384Hex(sourceStr);
 			case SHA512:
-				password = DigestUtils.sha512Hex(sourceStr);
-				break;
+				return DigestUtils.sha512Hex(sourceStr);
+			case none:
+				return sourceStr;
 			default:
-				break;
+				MessageCode code = MessageCode.newMessageCode(MessageType.Error);
+				code.setMsgKey("illegal.encryption.error");
+				throw new FTPServerRuntimeException(lmr.getMessage(code,algorithms.name()));
 		}
-		return password;
 	}
 }

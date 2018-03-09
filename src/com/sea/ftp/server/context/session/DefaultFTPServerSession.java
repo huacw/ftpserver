@@ -28,6 +28,10 @@ public class DefaultFTPServerSession extends AbstractContext implements FTPServe
 	 * 数据传输类型键
 	 */
 	public static final String KEY_TRANSFER_DATA_TYPE = "ftp.server.session.transfer.datatype";
+	/**
+	 * 用户当前路径键
+	 */
+	public static final String KEY_USER_CURRENT_PATH = "ftp.server.session.user.current.path";
 
 	@Override
 	public User getCurrentUser() {
