@@ -45,6 +45,7 @@ out/
 ## .gitignore for eclipse
 *.pydevproject
 .project
+.classpath
 .metadata
 bin/**
 tmp/**
