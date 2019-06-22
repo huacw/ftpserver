@@ -77,10 +77,8 @@ public class User {
 	/**
 	 * 设置用户默认路径以及权限
 	 * 
-	 * @param path
-	 *            用户默认路径
-	 * @param authorities
-	 *            权限
+	 * @param path        用户默认路径
+	 * @param authorities 权限
 	 */
 	public void setHomeDirectroy(String path, Authority... authorities) {
 		setUserDirectroy(USER_HOME, path, authorities);
@@ -89,12 +87,9 @@ public class User {
 	/**
 	 * 设置用户路径以及权限
 	 * 
-	 * @param pathName
-	 *            用户路径名称
-	 * @param path
-	 *            用户路径
-	 * @param authorities
-	 *            权限
+	 * @param pathName    用户路径名称
+	 * @param path        用户路径
+	 * @param authorities 权限
 	 */
 	public void setUserDirectroy(String pathName, String path, Authority... authorities) {
 		// 判断是否为有效路径名称
@@ -120,8 +115,7 @@ public class User {
 	/**
 	 * 获取用户工作目录
 	 * 
-	 * @param name
-	 *            工作目录名称
+	 * @param name 工作目录名称
 	 * @return 用户工作目录
 	 */
 	public String getWorkDirectroy(String name) {
@@ -132,25 +126,49 @@ public class User {
 		if (StringUtils.isBlank(name) || (!name.startsWith("/"))) {
 			throw new IllegalArgumentException("illegal.user.pathname", null, name, userName);
 		}
-		// 判断是否为用户虚拟路径
-		int index = name.indexOf(name, 1);
-		if (index == -1) {
-			return name;
+
+		List<String> allParentDirs = listAllDir(name);
+		if(allParentDirs == null || allParentDirs.isEmpty()) {
+			return USER_HOME;
 		}
-		name = name.substring(0, index);
-		if (workDirectroies.containsKey(name)) {
-			return name;
+		for(String dir : allParentDirs) {
+			// 判断是否为用户虚拟路径
+			if(workDirectroies.containsKey(dir)) {
+				return dir;
+			}
 		}
 		return USER_HOME;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(listAllDir("/role/werwer/sdf"));
+
+	}
+
+	/**
+	 * 遍历所有目录
+	 * 
+	 * @param path
+	 * @return
+	 */
+	private static List<String> listAllDir(String path) {
+		List<String> allDirs = new ArrayList<>();
+		File file = new File(path);
+		do {
+			if (!file.isFile()) {
+				allDirs.add(file.getPath().replaceAll("\\\\", "/"));
+			}
+			file = file.getParentFile();
+
+		} while (file != null);
+		return allDirs;
 	}
 
 	/**
 	 * 获取用户绝对路径
 	 * 
-	 * @param name
-	 *            路径名称
-	 * @param relativePath
-	 *            相对访问地址
+	 * @param name         路径名称
+	 * @param relativePath 相对访问地址
 	 * @return 绝对路径
 	 */
 	public String getAbstractUserPath(String name, String relativePath) {
@@ -160,10 +178,8 @@ public class User {
 	/**
 	 * 获取用户绝对路径
 	 * 
-	 * @param name
-	 *            路径名称
-	 * @param relativePath
-	 *            相对访问地址
+	 * @param name         路径名称
+	 * @param relativePath 相对访问地址
 	 * @return 绝对路径文件
 	 */
 	public File getAbstractUserFile(String name, String relativePath) {
