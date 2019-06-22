@@ -54,7 +54,7 @@ public class CommandContext {
         this.response = response;
     }
 
-    public int getErrPwdCount() {
+    public synchronized int getErrPwdCount() {
         Integer errPwdCount = (Integer) ftpServerSession.getAtrribute(ERR_PWD_COUNT_KEY);
         return errPwdCount == null ? 0 : errPwdCount;
     }
