@@ -93,7 +93,13 @@ public class DefaultFTPServerHandler extends FTPServerHandler {
 		}
 	}
 
-	@Override
+	/**
+	 * netty5的请求处理
+	 * 
+	 * @param ctx
+	 * @param request
+	 */
+	// @Override
 	public void messageReceived(ChannelHandlerContext ctx, String request) {
 		String[] items = request.split("\\s+");
 		if (items == null || items.length < 1) {
@@ -171,5 +177,77 @@ public class DefaultFTPServerHandler extends FTPServerHandler {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		ctx.close();
 		logger.error("连接异常", cause);
+	}
+
+	/**
+	 * netty4的请求处理
+	 */
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, String request) throws Exception {
+		String[] items = request.split("\\s+");
+		if (items == null || items.length < 1) {
+			return;
+		}
+		logger.debug(String.format("客户端请求为：%s", request));
+		// 获取服务器会话
+		FTPServerContext serverContext = getServerContext();
+
+		FTPServerSession ftpServerSession = serverContext.getFTPServerSession(String.valueOf(ctx.hashCode()));
+
+		FTPRequest ftpRequest = new DefaultFTPServerRequest();
+		ftpRequest.setAtrribute(DefaultFTPServerRequest.FTP_SERVER_SESSION, ftpServerSession);
+		String cmd = items[0];
+		ftpRequest.setAtrribute(DefaultFTPServerRequest.FTP_REQUEST_CMD, cmd);
+		if (items.length > 1) {
+			int length = items.length;
+			String[] args = new String[length - 1];
+			for (int i = 0; i < length - 1; i++) {
+				args[i] = items[i + 1];
+			}
+			ftpRequest.setAtrribute(DefaultFTPServerRequest.FTP_REQUEST_CMD_ARGS, args);
+		}
+
+		FTPResponse ftpResponse = new DefaultFTPServerResponse();
+		ftpResponse.setAtrribute(Constants.KEY_SESSION_STREAM, ctx);
+
+		CommandContext cmdContext = new CommandContext();
+		cmdContext.setFtpServerSession(ftpServerSession);
+		cmdContext.setRequest(ftpRequest);
+		cmdContext.setResponse(ftpResponse);
+		cmdContext.setServerContext(serverContext);
+
+		try {
+			serverContext.getCommandFactory().getCommand(cmd).execute(cmdContext);
+		} catch (IllegalCommandException e) {
+			FtpReply reply = new LocalizedFTPReply();
+			ctx.writeAndFlush(
+					reply.getMessage(FtpReply.REPLY_500_SYNTAX_ERROR_COMMAND_UNRECOGNIZED, e.getMessage()) + "\n");
+		} catch (FTPIOException e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		// Generate and write a response.
+		// System.out.println("messageReceived:" + ctx.hashCode());
+		// String response;
+		// boolean close = false;
+		// if (request.isEmpty()) {
+		// response = "Please type something.\r\n";
+		// } else if (closeCmds.contains(request.toLowerCase())) {
+		// response = "Have a good day!\r\n";
+		// close = true;
+		// } else {
+		// response = "Did you say '" + request + "'?\r\n";
+		// }
+
+		// We do not need to write a ChannelBuffer here.
+		// We know the encoder inserted at TelnetPipelineFactory will do the
+		// conversion.
+		// ChannelFuture future = ctx.channel().write(response);
+
+		// Close the connection after sending 'Have a good day!'
+		// if the client has sent 'bye'.
+		// if (close) {
+		// future.addListener(ChannelFutureListener.CLOSE);
+		// }
 	}
 }

@@ -15,6 +15,8 @@ public class DataConnectionConfiguration {
     @XmlAttribute(name = "idle-timeout")
     private int idleTimeout;
     @XmlAttribute(name = "ssl")
+    private boolean sslStatus;
+    @XmlElement(name = "ssl")
     private SSLConfiguration ssl;
     @XmlElement(name = "active")
     private ActiveModeConfiguration activeModeConfiguration;
@@ -52,4 +54,12 @@ public class DataConnectionConfiguration {
     public void setPassiveModeConfiguration(PassiveModeConfiguration passiveModeConfiguration) {
         this.passiveModeConfiguration = passiveModeConfiguration;
     }
+
+	public boolean isSslStatus() {
+		return sslStatus;
+	}
+
+	public void setSslStatus(boolean sslStatus) {
+		this.sslStatus = sslStatus;
+	}
 }

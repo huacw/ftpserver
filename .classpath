@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src-api"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_72"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_101"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
-	<classpathentry kind="lib" path="lib/netty-all-5.0.0.Alpha2.jar"/>
+	<classpathentry kind="lib" path="lib/netty-all-4.1.15.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

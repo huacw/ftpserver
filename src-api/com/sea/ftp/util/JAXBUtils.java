@@ -27,10 +27,8 @@ public class JAXBUtils {
 	/**
 	 * 把xml文件转换为JavaBean
 	 * 
-	 * @param xml
-	 *            xml文件
-	 * @param clazz
-	 *            要转成的类
+	 * @param xml   xml文件
+	 * @param clazz 要转成的类
 	 * @return 解析的实例对象
 	 * @throws JAXBException
 	 * @throws IOException
@@ -53,10 +51,8 @@ public class JAXBUtils {
 	/**
 	 * 把xml文件转换为JavaBean
 	 * 
-	 * @param file
-	 *            要解析的xml文件
-	 * @param clazz
-	 *            要转成的类
+	 * @param file  要解析的xml文件
+	 * @param clazz 要转成的类
 	 * @return 解析的实例对象
 	 */
 	public static Object xmlToBean(File file, Class<?> clazz) {
@@ -68,17 +64,15 @@ public class JAXBUtils {
 			Unmarshaller um = jaxbContext.createUnmarshaller();
 			return um.unmarshal(file);
 		} catch (Exception e) {
-			throw new RuntimeException("XML文件格式错误");
+			throw new RuntimeException("XML文件格式错误", e);
 		}
 	}
 
 	/**
 	 * 把xml文件流转换为JavaBean
 	 * 
-	 * @param is
-	 *            xml文件流
-	 * @param clazz
-	 *            要转成的类
+	 * @param is    xml文件流
+	 * @param clazz 要转成的类
 	 * @return 解析的实例对象
 	 */
 	public static Object xmlToBean(InputStream is, Class<?> clazz) {
@@ -98,8 +92,7 @@ public class JAXBUtils {
 	/**
 	 * 将java对象转换为xml字符串
 	 * 
-	 * @param obj
-	 *            java对象
+	 * @param obj java对象
 	 * @return xml字符串
 	 */
 	public static String beanToXML(Object obj) {
@@ -121,16 +114,12 @@ public class JAXBUtils {
 	/**
 	 * 把xml文件流转换为JavaBean，带格式验证
 	 * 
-	 * @param xml
-	 *            xml文件流
-	 * @param clazz
-	 *            要转成的类
-	 * @param schemaFile
-	 *            验证文件
+	 * @param xml        xml文件流
+	 * @param clazz      要转成的类
+	 * @param schemaFile 验证文件
 	 * @return
 	 */
-	public static Object xmlToBean(InputStream xml, Class<?> clazz,
-			File schemaFile) {
+	public static Object xmlToBean(InputStream xml, Class<?> clazz, File schemaFile) {
 		if (schemaFile == null || (!schemaFile.exists())) {
 			throw new RuntimeException("未找到验证文件");
 		}
@@ -138,12 +127,10 @@ public class JAXBUtils {
 		ValidationEventCollector vec = new ValidationEventCollector();
 
 		try {
-			SchemaFactory sf = SchemaFactory
-					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = sf.newSchema(schemaFile);
 
-			JAXBContext jc = JAXBContext.newInstance(clazz.getPackage()
-					.getName());
+			JAXBContext jc = JAXBContext.newInstance(clazz.getPackage().getName());
 			Unmarshaller u = jc.createUnmarshaller();
 			u.setSchema(schema);
 			u.setEventHandler(vec);
@@ -159,8 +146,7 @@ public class JAXBUtils {
 					ValidationEventLocator vel = ve.getLocator();
 					int line = vel.getLineNumber();
 					int column = vel.getColumnNumber();
-					System.err.println("At line=" + line + ", column=" + column
-							+ ": " + msg);
+					System.err.println("At line=" + line + ", column=" + column + ": " + msg);
 				}
 			}
 		}
