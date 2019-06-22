@@ -128,22 +128,18 @@ public class User {
 		}
 
 		List<String> allParentDirs = listAllDir(name);
-		if(allParentDirs == null || allParentDirs.isEmpty()) {
+		if (allParentDirs == null || allParentDirs.isEmpty()) {
 			return USER_HOME;
 		}
-		for(String dir : allParentDirs) {
+		for (String dir : allParentDirs) {
 			// 判断是否为用户虚拟路径
-			if(workDirectroies.containsKey(dir)) {
+			if (workDirectroies.containsKey(dir)) {
 				return dir;
 			}
 		}
 		return USER_HOME;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(listAllDir("/role/werwer/sdf"));
-
-	}
 
 	/**
 	 * 遍历所有目录
