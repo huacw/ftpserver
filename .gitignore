@@ -14,7 +14,7 @@ target/
 ivy*
 eclipse
 # default HSQL database files for production mode
-prodDb.*
+/prodDb.*
 # general HSQL database files
 *Db.properties
 *Db.script
@@ -97,4 +97,9 @@ Icon
 *_copy.htm
 *_copy.html
 *.pdb
+/bin/
+/.classpath
+/.project
+/.idea/
+/.settings/
 /bin/
