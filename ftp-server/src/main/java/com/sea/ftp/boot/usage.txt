@@ -1,0 +1,21 @@
+Help: [OPTION] [PARAMS] com.sea.ftp.boot.BootStartup
+	FTP server help documentation.
+	
+	[OPTION] contains command start|stop|suspended|resume|help
+		Start		 Start FTP server.
+		Stop		 Stop FTP server.
+		suspended	 Suspended FTP server.
+		resume		 Resume restore FTP server.
+		Help 		 view help documentation
+	[PARAMS] command parameters (optional)
+		-default	 use default configuration.
+		-config		 specify server configuration.
+		-h			 specifies the server bound IP.
+		-p			 specifies the port of the server binding.
+		-ssl		 is using SSL.
+	Example：
+	com.sea.ftp.boot.BootStartup start Start FTP Server using default configuration.
+	com.sea.ftp.boot.BootStartup start -config ./conf/config.xml Start FTP Server using the configuration of config.xml.
+	com.sea.ftp.boot.BootStartup start -h 192.168.1.100  Start FTP Server ,the IP is 192.168.1.100 and the Port is 21.
+	com.sea.ftp.boot.BootStartup start -p 121 Start FTP Server ,the IP is 127.0.0.1 and the Port is 121.
+	com.sea.ftp.boot.BootStartup start -ssl Start FTP Server using SSL.
