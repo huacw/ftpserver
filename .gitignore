@@ -5,16 +5,16 @@ target/
 # web application files
 #/web-app/WEB-INF
 # IDE support files
-/.classpath
-/.launch
-/.project
-/.settings
-/*.launch
-/*.tmproj
-/ivy*
-/eclipse
+.classpath
+.launch
+.project
+.settings
+*.launch
+*.tmproj
+ivy*
+eclipse
 # default HSQL database files for production mode
-/prodDb.*
+prodDb.*
 # general HSQL database files
 *Db.properties
 *Db.script
